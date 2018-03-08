@@ -1,4 +1,4 @@
-RSpec.describe 'User Registration', type: :request do 
+RSpec.describe 'User Registration', type: :request do
   let(:headers) { { HTTP_ACCEPT: 'application/json' } }
 
 context 'with valid credentials' do
@@ -33,20 +33,19 @@ end
     expect(response_json['errors']['email']).to eq ["is invalid", "is not an email"]
     expect(response.status).to eq 422
 end
-    it 'an already registered email' do 
+    it 'an already registered email' do
       FactoryBot.create(:user, email: 'example@craftacademy.se',
                                 password: 'password',
                                 password_confirmation: 'password')
-      
+
       post '/api/v1/auth', params: {
         email: 'example@craftacademy.se', password: 'password',
         password_confirmation: 'password'
       }, headers: headers
 
 
-      expect(response_json['errors']['email']).to eq ["has already been taken", "has already been taken"]
+      expect(response_json['errors']['email']).to eq ["has already been taken"]
       expect(response.status).to eq 422
     end
   end
 end
- 
